@@ -3,7 +3,7 @@ using UnityEngine;
 namespace Game
 {
     [RequireComponent(typeof(Rigidbody2D))]
-    public class Controller : MonoBehaviour
+    public class Carriage : MonoBehaviour
     {
         private ICarriageController _controller;
         private Rigidbody2D _rigidbody;
@@ -16,7 +16,7 @@ namespace Game
 
         private void Awake()
         {
-            _controller = new MouseController();
+            _controller = new WASDCarController();
             _rigidbody = GetComponent<Rigidbody2D>();
         }
 
