@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+using Game.Control;
 using UnityEngine;
 
 namespace Game
@@ -7,14 +6,31 @@ namespace Game
     [RequireComponent(typeof(Rigidbody2D))]
     public class Ball : MonoBehaviour
     {
+        [SerializeField]
         private Rigidbody2D _rigidbody;
 
+        [SerializeField]
+        private Transform _carriage;
+
+        [SerializeField]
+        private int _level;
+
+        public int Level
+        {
+            get { return _level; }
+            set
+            {
+                _level = value;
+                EventEther.CallLevelUp();
+            }
+        }
+
+        [SerializeField]
+        private float _speed = 4f;
+
+        private bool _isLaunched;
         private Vector2 _cachedVelocity;
 
-        private void Awake()
-        {
-            _rigidbody = GetComponent<Rigidbody2D>();
-        }
 
         private bool Approximately(float a, float b, float accuracy = 1e-3f)
         {
@@ -23,26 +39,40 @@ namespace Game
 
         private void Update()
         {
-            if (!Approximately(_rigidbody.velocity.sqrMagnitude, 0f))
+            if (_isLaunched)
             {
-                _cachedVelocity = _rigidbody.velocity;
+                if (!Approximately(_rigidbody.velocity.sqrMagnitude, 0f))
+                {
+                    _cachedVelocity = _rigidbody.velocity;
+                }
+
+                if (Approximately(_rigidbody.velocity.y, 0f))
+                {
+                    _rigidbody.velocity = (_rigidbody.velocity + Vector2.down).normalized * _speed;
+                }
+            }
+            else
+            {
+                transform.position = new Vector2(_carriage.position.x, transform.position.y);
+
+                if (GameInput.Launch())
+                {
+                    Launch();
+                }
             }
 
-            if (Approximately(_rigidbody.velocity.y, 0f))
-            {
-                _rigidbody.velocity = (_rigidbody.velocity + Vector2.down).normalized * 4f;
-            }
+        }
+
+        private void Launch()
+        {
+            _rigidbody.velocity = new Vector2(Random.Range(-1f, 1f), 1f).normalized * _speed;
+            _isLaunched = true;
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
             var vec = Vector2.Reflect(_cachedVelocity, collision.GetContact(0).normal).normalized;
-            _rigidbody.velocity = vec * 4f;
-
-            if (collision.gameObject.TryGetComponent<Brick>(out var brick))
-            {
-                brick.Hit();
-            }
+            _rigidbody.velocity = vec * _speed;
         }
 
         private void OnCollisionStay2D(Collision2D collision)
@@ -53,8 +83,8 @@ namespace Game
             {
                 normal += collision.GetContact(i).normal;
             }
-            
-            _rigidbody.velocity = 4f * (normal.normalized + _rigidbody.velocity).normalized;
+
+            _rigidbody.velocity = _speed * (normal.normalized + _rigidbody.velocity).normalized;
         }
     }
 }

@@ -1,3 +1,4 @@
+using Game.Control;
 using UnityEngine;
 
 namespace Game
@@ -5,25 +6,29 @@ namespace Game
     [RequireComponent(typeof(Rigidbody2D))]
     public class Carriage : MonoBehaviour
     {
-        private ICarriageController _controller;
+        [SerializeField]
         private Rigidbody2D _rigidbody;
 
         [SerializeField]
         private float _speed = 6;
 
-        [SerializeField]
-        private Rigidbody2D _ballRigidbody;
-
-        private void Awake()
-        {
-            _controller = new WASDCarController();
-            _rigidbody = GetComponent<Rigidbody2D>();
-        }
-
         private void Update()
         {
-            _controller.Move(_rigidbody, _speed);
-            _controller.Launch(_ballRigidbody);
+            bool l = GameInput.Left();
+            bool r = GameInput.Right();
+
+            if (l && !r)
+            {
+                _rigidbody.velocity = Vector2.left * _speed;
+            }
+            else if (!l && r)
+            {
+                _rigidbody.velocity = Vector2.right * _speed;
+            }
+            else
+            {
+                _rigidbody.velocity = Vector2.zero;
+            }
         }
     }
 }

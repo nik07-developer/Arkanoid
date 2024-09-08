@@ -14,6 +14,9 @@ namespace Game
         private FailArea _failArea;
 
         [SerializeField]
+        private LevelLoader _levelLoader;
+
+        [SerializeField]
         private HudPanel _hudPanel;
 
         private const int maxLives = 3;
@@ -25,15 +28,40 @@ namespace Game
         private int _lives = maxLives;
 
         [ShowInInspector, ReadOnly]
-        private int _score = 0;
-
-        [ShowInInspector, ReadOnly]
         private int _level = 0;
+
+        private Score _score;
+
+        public void StopGame()
+        {
+            _isPause = true;
+        }
+
+        public void ContinueGame()
+        {
+            _isPause = false;
+        }
+
+        public void FailLevel()
+        {
+
+        }
+
+        public void RestartLevel()
+        {
+
+        }
 
 
         private void Awake()
         {
+            _score = Score.Instance;
+
             _failArea.OnFail += FF;
+        }
+
+        private void Start()
+        {
             ResetGame();
         }
 
@@ -44,9 +72,9 @@ namespace Game
 
         private void Update()
         {
-            if ( Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                _isPause = !_isPause;
+                StopGame();
             }
 
             if (!_isPause)
@@ -57,17 +85,19 @@ namespace Game
 
         private void FF()
         {
-
-        }
-
-        private void ResetLevel()
-        {
-            
+            _lives--;
+            if (_lives > 0)
+            {
+                _levelLoader.LoadLevel(_level);
+            }
+            else
+            {
+                ResetGame();
+            }
         }
 
         private void ResetGame()
         {
-            _score = 0;
             _level = 0;
             _lives = maxLives;
 
@@ -77,6 +107,8 @@ namespace Game
                 ControlsType.Mouse => new MouseControl(),
                 ControlsType.WASD => new WASDController(),
             };
+
+            _levelLoader.LoadLevel(0);
         }
     }
 }
