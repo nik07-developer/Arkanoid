@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 111148251715317391, guid: d70049167f17f5442b2573830f0bd7ab, type: 3}
+      propertyPath: _power
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2058430644234100638, guid: d70049167f17f5442b2573830f0bd7ab, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -58,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8691063646201011111, guid: d70049167f17f5442b2573830f0bd7ab, type: 3}
       propertyPath: m_Name
-      value: Brick3 Variant
+      value: Brick3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

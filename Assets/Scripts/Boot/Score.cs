@@ -13,10 +13,10 @@ namespace Game.Boot
         public int Max { get; set; }
 
         [ShowInInspector, ReadOnly]
-        public int Current {  get; set; }
+        public int Current { get; set; }
 
         [ShowInInspector, ReadOnly]
-        public int Saved {  get; set; }
+        public int Saved { get; set; }
 
         private void Awake()
         {

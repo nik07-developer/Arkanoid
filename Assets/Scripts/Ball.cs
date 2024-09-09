@@ -13,15 +13,15 @@ namespace Game
         private Transform _carriage;
 
         [SerializeField]
-        private int _level;
+        private int _power;
 
-        public int Level
+        public int Power
         {
-            get { return _level; }
+            get { return _power; }
             set
             {
-                _level = value;
-                EventEther.CallLevelUp();
+                _power = value;
+                EventEther.CallPowerUp(value);
             }
         }
 
@@ -55,7 +55,7 @@ namespace Game
             {
                 transform.position = new Vector2(_carriage.position.x, transform.position.y);
 
-                if (GameInput.Launch())
+                if (GameInput.Launch() && Time.timeScale > 0)
                 {
                     Launch();
                 }

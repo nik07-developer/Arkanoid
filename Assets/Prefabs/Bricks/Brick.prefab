@@ -229,7 +229,7 @@ GameObject:
   - component: {fileID: 2058430644234100638}
   - component: {fileID: 2603564908804046563}
   - component: {fileID: 439624595145938667}
-  - component: {fileID: 7663511467750961202}
+  - component: {fileID: 111148251715317391}
   m_Layer: 0
   m_Name: Brick
   m_TagString: Brick
@@ -338,7 +338,7 @@ CompositeCollider2D:
   m_OffsetDistance: 0.00005
   m_UseDelaunayMesh: 0
   m_CompositeGameObject: {fileID: 8691063646201011111}
---- !u!114 &7663511467750961202
+--- !u!114 &111148251715317391
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -347,12 +347,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8691063646201011111}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 659b9f1675d9c7944b27554d8c2b9d71, type: 3}
+  m_Script: {fileID: 11500000, guid: 295650ba0f5a0d049a5696ba06cf80f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _level: 1
+  _power: 1
   _sprite: {fileID: 218586512289270643}
-  _levelText: {fileID: 8044810877153417076}
+  _powerText: {fileID: 8044810877153417076}
 --- !u!1 &9184675658369964283
 GameObject:
   m_ObjectHideFlags: 0

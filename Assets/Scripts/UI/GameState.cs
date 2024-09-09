@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace Game.UI
 {
-    public enum UIState
+    public enum GameState
     {
         GameRunning,
         Pause,
-        Fail,
-        Lose,
+        LevelFailed,
+        GameLosed,
         LevelCompleted,
         Win
     }

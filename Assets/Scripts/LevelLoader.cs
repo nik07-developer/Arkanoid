@@ -13,6 +13,8 @@ namespace Game
         [SerializeField]
         private List<GameObject> _levelPrefabs;
 
+        public int LevelCount => _levelPrefabs.Count;
+
         public void LoadLevel(int levelIndex)
         {
             if (_currentLevelRoot.childCount > 0)
@@ -21,7 +23,7 @@ namespace Game
             }
 
             Instantiate(_levelPrefabs[levelIndex], _currentLevelRoot);
-            EventEther.CallLevelLoaded();
+            EventEther.CallLevelLoaded(levelIndex);
         }
     }
 }

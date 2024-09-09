@@ -18,39 +18,49 @@ namespace Game
 
         private void Awake()
         {
-            EventEther.OnLevelUp += Handle;
-            EventEther.OnLevelLoaded += Handle;
+            EventEther.OnPowerUp += HandlePowerUp;
+            EventEther.OnLevelLoaded += HandleLevelLoded;
         }
 
         private void OnDisable()
         {
-            EventEther.OnLevelUp -= Handle;
-            EventEther.OnLevelLoaded -= Handle;
+            EventEther.OnPowerUp -= HandlePowerUp;
+            EventEther.OnLevelLoaded -= HandleLevelLoded;
         }
 
-        private void Handle()
+        private void HandlePowerUp(int power)
         {
             var ball = FindObjectOfType<Ball>();
 
-            foreach (var brick in GameObject.FindObjectsOfType<LevelBrick>())
+            foreach (var brick in GameObject.FindObjectsOfType<Brick>())
             {
-                brick.Paint(RangeColorByLevel(brick.Level, ball.Level));
+                brick.Paint(RangeColorByLevel(brick.Power, ball.Power));
             }
         }
 
-        public Color RangeColorByLevel(int brickLevel, int ballLevel)
+        private void HandleLevelLoded(int levelIndex)
         {
-            if (brickLevel <= ballLevel)
+            var ball = FindObjectOfType<Ball>();
+
+            foreach (var brick in GameObject.FindObjectsOfType<Brick>())
+            {
+                brick.Paint(RangeColorByLevel(brick.Power, ball.Power));
+            }
+        }
+
+        public Color RangeColorByLevel(int brickPower, int ballPower)
+        {
+            if (brickPower <= ballPower)
             {
                 return _green;
             }
 
-            if (brickLevel - ballLevel < 10)
+            if (brickPower - ballPower < 10)
             {
                 return _yellow;
             }
 
-            if (brickLevel - ballLevel < 25)
+            if (brickPower - ballPower < 25)
             {
                 return _orange;
             }

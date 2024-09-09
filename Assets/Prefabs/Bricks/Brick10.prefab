@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &2059230180953882551
+--- !u!1001 &5736579304264158784
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 111148251715317391, guid: d70049167f17f5442b2573830f0bd7ab, type: 3}
       propertyPath: _power
-      value: 2
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2058430644234100638, guid: d70049167f17f5442b2573830f0bd7ab, type: 3}
       propertyPath: m_LocalPosition.x
@@ -54,15 +54,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7663511467750961202, guid: d70049167f17f5442b2573830f0bd7ab, type: 3}
       propertyPath: _level
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8044810877153417076, guid: d70049167f17f5442b2573830f0bd7ab, type: 3}
       propertyPath: m_text
-      value: 2
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8691063646201011111, guid: d70049167f17f5442b2573830f0bd7ab, type: 3}
       propertyPath: m_Name
-      value: Brick2
+      value: Brick5 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

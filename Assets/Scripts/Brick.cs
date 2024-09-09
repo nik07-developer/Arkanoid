@@ -3,21 +3,21 @@ using UnityEngine;
 
 namespace Game
 {
-    public class LevelBrick : MonoBehaviour
+    public class Brick : MonoBehaviour
     {
         [SerializeField]
-        private int _level;
+        private int _power;
 
-        public int Level
+        public int Power
         {
             get
             {
-                return _level;
+                return _power;
             }
             private set
             {
-                _level = value;
-                _levelText.text = _level.ToString();
+                _power = value;
+                _powerText.text = _power.ToString();
             }
         }
 
@@ -25,7 +25,7 @@ namespace Game
         private SpriteRenderer _sprite;
 
         [SerializeField]
-        private TMP_Text _levelText;
+        private TMP_Text _powerText;
 
         public void Paint(Color color)
         {
@@ -34,22 +34,23 @@ namespace Game
 
         private void OnValidate()
         {
-            _levelText.text = _level.ToString();
+            _powerText.text = _power.ToString();
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
             if (collision.gameObject.TryGetComponent<Ball>(out var ball))
             {
-                if (Level > ball.Level)
+                if (Power > ball.Power)
                 {
-                    Level--;
-                    EventEther.CallLevelUp(); // to update colors
+                    Power--;
+                    EventEther.CallPowerUp(ball.Power); // to update colors
                 }
                 else
                 {
-                    ball.Level += Level;
+                    ball.Power += Power;
                     gameObject.SetActive(false);
+                    EventEther.CallBrickBroken(this);
                 }
             }
         }

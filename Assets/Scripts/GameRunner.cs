@@ -1,8 +1,6 @@
 using Game.Boot;
 using Game.Control;
 using Game.UI;
-using System.Collections;
-using System.Collections.Generic;
 using TriInspector;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -18,7 +16,7 @@ namespace Game
         private LevelLoader _levelLoader;
 
         [SerializeField]
-        private HudPanel _hudPanel;
+        private HudWindow _hudWindow;
 
         [SerializeField]
         private Window _pauseWindow;
@@ -38,24 +36,34 @@ namespace Game
         private const int maxLives = 3;
 
         [ShowInInspector, ReadOnly]
-        private bool _isPause = false;
-
-        [ShowInInspector, ReadOnly]
         private int _lives = maxLives;
 
+        public int Lives
+        {
+            get { return _lives; }
+            private set
+            {
+                _lives = value;
+                EventEther.CallLivesChanged(value);
+            }
+        }
+
         [ShowInInspector, ReadOnly]
-        private int _level = 0;
+        private int _level = 1;
 
-        private Score _score;
-
-        private UIState _state;
+        private GameState _state;
 
 
         // Init
         private void Awake()
         {
-            _score = Score.Instance;
-            _failArea.OnFail += FF;
+            _failArea.OnFail += FailLevel;
+            EventEther.OnBrickBroken += CheckLevel;
+
+            EventEther.OnPowerUp += UpdatePower;
+            EventEther.OnLevelLoaded += UpdateHud; // not a updateLevel
+            EventEther.OnScoreChanged += UpdateScore;
+            EventEther.OnLivesChanged += UpdateLives;
         }
 
         private void Start()
@@ -65,7 +73,13 @@ namespace Game
 
         private void OnDisable()
         {
-            _failArea.OnFail -= FF;
+            _failArea.OnFail -= FailLevel;
+            EventEther.OnBrickBroken -= CheckLevel;
+
+            EventEther.OnPowerUp -= UpdatePower;
+            EventEther.OnLevelLoaded -= UpdateHud;
+            EventEther.OnScoreChanged -= UpdateScore;
+            EventEther.OnLivesChanged -= UpdateLives;
         }
 
 
@@ -75,140 +89,208 @@ namespace Game
         {
             SetPause(true);
             _pauseWindow.Show();
-            _state = UIState.Pause;
+            _state = GameState.Pause;
         }
 
         public void ContinueGame()
         {
+            HideAll();
             SetPause(false);
-            _pauseWindow.Hide();
-            _state = UIState.GameRunning;
+            _state = GameState.GameRunning;
         }
 
         private void SetPause(bool pause)
         {
             if (pause)
             {
-                _isPause = true;
                 Time.timeScale = 0f;
             }
             else
             {
-                _isPause = false;
                 Time.timeScale = 1f;
             }
-
         }
+
+        private void HideAll()
+        {
+            _pauseWindow.Hide();
+            _levelCompletedWindow.Hide();
+            _gameCompletedWindow.Hide();
+            _levelFailedWindow.Hide();
+            _gameLosedWindow.Hide();
+        }
+
+        private void UpdateHud(int tmp)
+        {
+            var ball = GameObject.FindObjectOfType<Ball>();
+            UpdateLevel(_level);
+            UpdateLives(_lives);
+            UpdatePower(ball.Power);
+            UpdateScore(Score.Instance.Current);
+        }
+
+        private void UpdatePower(int power) => _hudWindow.UpdatePower(power);
+        private void UpdateScore(int score) => _hudWindow.UpdateScore(score);
+        private void UpdateLevel(int level) => _hudWindow.UpdateLevel(level);
+        private void UpdateLives(int lives) => _hudWindow.UpdateLives(lives);
 
         public void FailLevel()
         {
+            SetPause(true);
+            Score.Instance.Max = Mathf.Max(Score.Instance.Max, Score.Instance.Current);
+            Lives--;
 
+            if (Lives > 0)
+            {
+                _levelFailedWindow.Show();
+                _state = GameState.LevelFailed;
+            }
+            else
+            {
+                _gameLosedWindow.Show();
+                _state = GameState.GameLosed;
+            }
+        }
+
+        public void CompleteLevel()
+        {
+            SetPause(true);
+            Score.Instance.Max = Mathf.Max(Score.Instance.Max, Score.Instance.Current);
+
+            if (_level < _levelLoader.LevelCount)
+            {
+                _levelCompletedWindow.Show();
+            }
+            else
+            {
+                _gameCompletedWindow.Show();
+            }
         }
 
         public void RestartLevel()
         {
-
+            Score.Instance.Max = Mathf.Max(Score.Instance.Max, Score.Instance.Current);
+            Score.Instance.Current = Score.Instance.Saved;
+            _levelLoader.LoadLevel(_level - 1);
+            _state = GameState.GameRunning;
+            HideAll();
+            SetPause(false);
         }
 
         public void NextLevel()
         {
+            Score.Instance.Max = Mathf.Max(Score.Instance.Max, Score.Instance.Current);
+            Score.Instance.Saved = Score.Instance.Current;
+            HideAll();
 
+            _level++;
+            if (_levelLoader.LevelCount > _level - 1)
+            {
+                _levelLoader.LoadLevel(_level - 1);
+                _state = GameState.GameRunning;
+                SetPause(false);
+            }
+            else
+            {
+                _gameCompletedWindow.Show();
+            }
         }
 
         public void BackToMainMenu()
         {
             SceneManager.LoadScene(0);
+            SetPause(false);
         }
 
         public void RestartGame()
         {
-            _level = 0;
-            _lives = maxLives;
+            _level = 1;
+            Lives = maxLives;
+
+            Score.Instance.Max = Mathf.Max(Score.Instance.Max, Score.Instance.Current);
+            Score.Instance.Saved = 0;
+            Score.Instance.Current = 0;
 
             GameInput.Controller = GameSettings.ControlsType switch
             {
                 ControlsType.Arrows => new ArrowsController(),
                 ControlsType.Mouse => new MouseControl(),
                 ControlsType.WASD => new WASDController(),
+                _ => new MouseControl()
             };
 
             _levelLoader.LoadLevel(0);
+            HideAll();
+            _state = GameState.GameRunning;
+            SetPause(false);
         }
-        
+
+        private void CheckLevel(Brick brick)
+        {
+            var bricks = GameObject.FindObjectsOfType<Brick>();
+
+            if (bricks == null || bricks.Length == 0)
+            {
+                CompleteLevel();
+            }
+        }
 
         private void Update()
         {
             _ = _state switch
             {
-                UIState.GameRunning => HandleGameRunningState(),
-                UIState.Pause => HandlePauseState(),
-                UIState.Fail => HandleFailState(),
-                UIState.Lose => HandleLoseState (),
-                UIState.LevelCompleted => HandleLevelCompletedState(),
-                UIState.Win => HandleWinState(),
-                _ => UIState.GameRunning
+                GameState.GameRunning => HandleGameRunningState(),
+                GameState.Pause => HandlePauseState(),
+                GameState.LevelFailed => HandleFailState(),
+                GameState.GameLosed => HandleLoseState(),
+                GameState.LevelCompleted => HandleLevelCompletedState(),
+                GameState.Win => HandleWinState(),
+                _ => GameState.GameRunning
             };
         }
 
         // State Handlers
 
-        private UIState HandleGameRunningState()
+        private GameState HandleGameRunningState()
         {
             if (GameInput.Pause())
             {
                 StopGame();
-                return UIState.Pause;
+                return GameState.Pause;
             }
 
-            return UIState.GameRunning;
+            return GameState.GameRunning;
         }
 
-        private UIState HandlePauseState()
+        private GameState HandlePauseState()
         {
             if (GameInput.Pause())
             {
                 ContinueGame();
-                return UIState.GameRunning;
+                return GameState.GameRunning;
             }
 
-            return UIState.Pause;
+            return GameState.Pause;
         }
 
-        private UIState HandleFailState()
+        private GameState HandleFailState()
         {
-            return UIState.Fail;
+            return GameState.LevelFailed;
         }
 
-        private UIState HandleLoseState()
+        private GameState HandleLoseState()
         {
-            return UIState.Lose;
+            return GameState.GameLosed;
         }
 
-        private UIState HandleLevelCompletedState()
+        private GameState HandleLevelCompletedState()
         {
-            return UIState.LevelCompleted;
+            return GameState.LevelCompleted;
         }
 
-        private UIState HandleWinState()
+        private GameState HandleWinState()
         {
-            return UIState.Win;
-        }
-
-
-
-
-
-        private void FF()
-        {
-            _lives--;
-            if (_lives > 0)
-            {
-                _levelLoader.LoadLevel(_level);
-            }
-            else
-            {
-                RestartGame();
-            }
+            return GameState.Win;
         }
     }
 }
