@@ -9,5 +9,10 @@ namespace Game.Boot
         {
             SceneManager.LoadScene(1);
         }
+
+        public void QuitGame()
+        {
+            Application.Quit();
+        }
     }
 }

@@ -1,12 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Game.UI
 {
     public class CameraScaler : MonoBehaviour
     {
-        const float defaultScale = 5f;
+        const float defaultScale = 5.75f;
 
         const int x = 1600;
         const int y = 900;
