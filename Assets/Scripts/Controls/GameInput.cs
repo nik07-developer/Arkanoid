@@ -18,6 +18,8 @@ namespace Game.Control
         public static bool Left() => Controller.Left();
         public static bool Right() => Controller.Right();
         public static bool Launch() => Controller.Launch();
+
+        public static bool Pause() => Input.GetKeyDown(KeyCode.Escape);
     }
 
     public interface IController
