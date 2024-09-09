@@ -17,9 +17,16 @@ namespace Game
             EventEther.OnLevelCompleted -= HandleLevelCompete;
         }
 
+        private static int CalcBonus(int brickPower)
+        {
+            if (brickPower >= 100) return 25;
+            if (brickPower >= 50) return 10;
+            return 5;
+        }
+
         private void HandleBrokenBrick(Brick brick)
         {
-            Score.Instance.Current += brick.Power;
+            Score.Instance.Current += CalcBonus(brick.Power);
             Score.Instance.Max = Mathf.Max(Score.Instance.Current, Score.Instance.Max);
             EventEther.CallScoreChanged(Score.Instance.Current);
         }

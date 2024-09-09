@@ -46,7 +46,7 @@ namespace Game
             if (ChechCarriage())
             {
                 var vec = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                return _carriage.transform.position.x - vec.x > 0.1f;
+                return _carriage.transform.position.x - vec.x > 0.25f;
             }
 
             return false;
@@ -57,7 +57,7 @@ namespace Game
             if (ChechCarriage())
             {
                 var vec = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-                return _carriage.transform.position.x - vec.x < -0.1f;
+                return _carriage.transform.position.x - vec.x < -0.25f;
             }
 
             return false;

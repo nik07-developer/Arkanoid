@@ -41,15 +41,27 @@ namespace Game
         {
             if (_isLaunched)
             {
-                if (!Approximately(_rigidbody.velocity.sqrMagnitude, 0f))
+                var velocity = _rigidbody.velocity;
+
+                if (Approximately(velocity.sqrMagnitude, 0f))
                 {
-                    _cachedVelocity = _rigidbody.velocity;
+                    _rigidbody.velocity = Vector2.down * _speed;
+                }
+                else
+                {
+                    if (Mathf.Abs(velocity.x) / Mathf.Abs(velocity.y) > 10)
+                    {
+                        velocity = new Vector2(velocity.x, velocity.y > 0 ? 5 : -5).normalized * _speed;
+                        _rigidbody.velocity = velocity;
+                    }
+
+                    _cachedVelocity = velocity;
                 }
 
-                if (Approximately(_rigidbody.velocity.y, 0f))
+                /*if (Approximately(_rigidbody.velocity.y, 0f) 
                 {
-                    _rigidbody.velocity = (_rigidbody.velocity + Vector2.down).normalized * _speed;
-                }
+                    _rigidbody.velocity = (_rigidbody.velocity + 2 * Vector2.down).normalized * _speed;
+                }*/
             }
             else
             {
@@ -71,11 +83,24 @@ namespace Game
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
+            if (collision.gameObject.TryGetComponent<Carriage>(out var car))
+            {
+                var carPos = car.transform.position;
+                var ballPos = transform.position;
+                float len = 2f;
+
+                var dx = ballPos.x - (carPos.x - len / 2);
+                var x = Mathf.Lerp(-1.4f, 1.4f, dx / len);
+
+                _rigidbody.velocity = _speed * new Vector2(x, 1f).normalized;
+                return;
+            }
+
             var vec = Vector2.Reflect(_cachedVelocity, collision.GetContact(0).normal).normalized;
             _rigidbody.velocity = vec * _speed;
         }
 
-        private void OnCollisionStay2D(Collision2D collision)
+        /*private void OnCollisionStay2D(Collision2D collision)
         {
             var normal = Vector2.zero;
 
@@ -85,7 +110,7 @@ namespace Game
             }
 
             _rigidbody.velocity = _speed * (normal.normalized + _rigidbody.velocity).normalized;
-        }
+        }*/
     }
 }
 

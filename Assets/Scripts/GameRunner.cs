@@ -156,6 +156,7 @@ namespace Game
         public void CompleteLevel()
         {
             SetPause(true);
+            _state = GameState.LevelCompleted;
             Score.Instance.Saved = Score.Instance.Current;
             Score.Instance.Max = Mathf.Max(Score.Instance.Max, Score.Instance.Current);
             EventEther.CallLevelCompleted(_level);

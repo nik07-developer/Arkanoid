@@ -27,7 +27,7 @@ RectTransform:
   m_GameObject: {fileID: 3034251552107272865}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5606076829351540069}
@@ -92,13 +92,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48
-  m_fontSizeBase: 48
+  m_fontSize: 64
+  m_fontSizeBase: 64
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -320,20 +320,20 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 3039722933969818713}
     m_ColliderPaths:
-    - - X: 10000000
-        Y: 5000000
-      - X: -10000000
-        Y: 5000000
-      - X: -10000000
-        Y: -5000000
-      - X: 10000000
-        Y: -5000000
+    - - X: 5000000
+        Y: 2500000
+      - X: -5000000
+        Y: 2500000
+      - X: -5000000
+        Y: -2500000
+      - X: 5000000
+        Y: -2500000
   m_CompositePaths:
     m_Paths:
-    - - {x: 0.99997073, y: -0.5}
-      - {x: 0.99997073, y: 0.5}
-      - {x: -1, y: 0.4999707}
-      - {x: -0.99997073, y: -0.5}
+    - - {x: 0.4999707, y: -0.25}
+      - {x: 0.4999707, y: 0.25}
+      - {x: -0.5, y: 0.2499707}
+      - {x: -0.4999707, y: -0.25}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
   m_UseDelaunayMesh: 0
@@ -483,7 +483,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6605489429941002461}
