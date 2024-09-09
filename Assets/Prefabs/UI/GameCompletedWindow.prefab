@@ -301,7 +301,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 20}
   m_SizeDelta: {x: 400, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5012675039671496924
@@ -332,7 +332,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: You Win the Game!
+  m_text: 'You Win the Game!
+
+    Your Score: '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -410,14 +412,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2438415892594486330}
-  - component: {fileID: 72910582320617995}
+  - component: {fileID: 4826692261253430099}
   m_Layer: 0
   m_Name: GameCompletedWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2438415892594486330
 Transform:
   m_ObjectHideFlags: 0
@@ -434,7 +436,7 @@ Transform:
   - {fileID: 1400837277311799411}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &72910582320617995
+--- !u!114 &4826692261253430099
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -443,10 +445,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2394955248627627636}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c765fe655d9fcfc4b979a26e0e84f786, type: 3}
+  m_Script: {fileID: 11500000, guid: 443b57563c49a8f4c9b089e9f0a745e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _window: {fileID: 2394955248627627636}
+  _finalText: {fileID: 2558268430488188229}
 --- !u!1 &6459342715549431240
 GameObject:
   m_ObjectHideFlags: 0

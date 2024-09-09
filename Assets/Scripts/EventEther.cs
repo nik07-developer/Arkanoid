@@ -50,9 +50,9 @@ namespace Game
             remove { _instance.LevelCompleted -= value; }
         }
 
-        public static void CallLevelCompleted(int levelIndex)
+        public static void CallLevelCompleted(int levelNumber)
         {
-            _instance.LevelCompleted?.Invoke(levelIndex);
+            _instance.LevelCompleted?.Invoke(levelNumber);
         }
 
 

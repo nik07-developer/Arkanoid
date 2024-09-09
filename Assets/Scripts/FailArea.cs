@@ -13,7 +13,6 @@ namespace Game
         {
             if (collision.gameObject.TryGetComponent<Ball>(out var ball))
             {
-                Debug.Log("GameOver");
                 OnFail();
             }
         }

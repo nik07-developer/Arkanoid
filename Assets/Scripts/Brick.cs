@@ -43,7 +43,7 @@ namespace Game
             {
                 if (Power > ball.Power)
                 {
-                    Power--;
+                    Power -= ball.Power;
                     EventEther.CallPowerUp(ball.Power); // to update colors
                 }
                 else

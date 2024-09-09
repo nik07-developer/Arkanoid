@@ -8,22 +8,27 @@ namespace Game
         private void Awake()
         {
             EventEther.OnBrickBroken += HandleBrokenBrick;
+            EventEther.OnLevelCompleted += HandleLevelCompete;
         }
 
         private void OnDisable()
         {
             EventEther.OnBrickBroken -= HandleBrokenBrick;
+            EventEther.OnLevelCompleted -= HandleLevelCompete;
         }
 
         private void HandleBrokenBrick(Brick brick)
         {
-            Score.Instance.Current += 5;
+            Score.Instance.Current += brick.Power;
+            Score.Instance.Max = Mathf.Max(Score.Instance.Current, Score.Instance.Max);
             EventEther.CallScoreChanged(Score.Instance.Current);
         }
 
         private void HandleLevelCompete(int levelIndex)
         {
             Score.Instance.Current += 50;
+            Score.Instance.Max = Mathf.Max(Score.Instance.Current, Score.Instance.Max);
+            EventEther.CallScoreChanged(Score.Instance.Current);
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Game
         private Window _pauseWindow;
 
         [SerializeField]
-        private Window _levelFailedWindow;
+        private LevelFailedWindow _levelFailedWindow;
 
         [SerializeField]
         private Window _gameLosedWindow;
@@ -31,7 +31,7 @@ namespace Game
         private Window _levelCompletedWindow;
 
         [SerializeField]
-        private Window _gameCompletedWindow;
+        private WinWindow _gameCompletedWindow;
 
         private const int maxLives = 3;
 
@@ -143,6 +143,7 @@ namespace Game
             if (Lives > 0)
             {
                 _levelFailedWindow.Show();
+                _levelFailedWindow.ShowFailText(_lives);
                 _state = GameState.LevelFailed;
             }
             else
@@ -155,7 +156,9 @@ namespace Game
         public void CompleteLevel()
         {
             SetPause(true);
+            Score.Instance.Saved = Score.Instance.Current;
             Score.Instance.Max = Mathf.Max(Score.Instance.Max, Score.Instance.Current);
+            EventEther.CallLevelCompleted(_level);
 
             if (_level < _levelLoader.LevelCount)
             {
@@ -164,6 +167,7 @@ namespace Game
             else
             {
                 _gameCompletedWindow.Show();
+                _gameCompletedWindow.ShowFinalScore(Score.Instance.Current, Score.Instance.Max);
             }
         }
 
@@ -190,14 +194,12 @@ namespace Game
                 _state = GameState.GameRunning;
                 SetPause(false);
             }
-            else
-            {
-                _gameCompletedWindow.Show();
-            }
         }
 
         public void BackToMainMenu()
         {
+            Score.Instance.Max = Mathf.Max(Score.Instance.Max, Score.Instance.Current);
+            Score.Instance.Saved = Score.Instance.Current;
             SceneManager.LoadScene(0);
             SetPause(false);
         }

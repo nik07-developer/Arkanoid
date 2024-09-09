@@ -84,14 +84,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1322294563092270093}
-  - component: {fileID: 7946376357784437205}
+  - component: {fileID: 1832684296173510227}
   m_Layer: 0
   m_Name: LevelFailWindow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1322294563092270093
 Transform:
   m_ObjectHideFlags: 0
@@ -100,7 +100,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5026662791552494253}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -108,7 +108,7 @@ Transform:
   - {fileID: 8364223926672786790}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7946376357784437205
+--- !u!114 &1832684296173510227
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -117,10 +117,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5026662791552494253}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c765fe655d9fcfc4b979a26e0e84f786, type: 3}
+  m_Script: {fileID: 11500000, guid: 9ed1f2116b3c77647a186a74f50667e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _window: {fileID: 5026662791552494253}
+  _text: {fileID: 8419958644715476075}
 --- !u!1 &5049889306611210426
 GameObject:
   m_ObjectHideFlags: 0
